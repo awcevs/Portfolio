@@ -1,0 +1,8 @@
+<%@ page language="java" contentType="text/html; charset=EUC-KR"
+    pageEncoding="EUC-KR"%>
+<%
+//String uploadPath = "D:\\±è¿ë¿í\\java\\cteam5\\WebContent\\upload";
+String uploadPath = "D:\\kch\\java\\cteam5\\WebContent\\upload";
+//String uploadPath = "D:\\±è¿ë¿í\\java\\cteam5\\WebContent\\upload";
+//String uploadPath = "D:\\±è¿ë¿í\\java\\cteam5\\WebContent\\upload";
+%>

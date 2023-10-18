@@ -1,0 +1,33 @@
+package test;
+
+import cteam.dao.DBManager;
+import cteam.dto.UserDTO;
+import cteam.vo.UserVO;
+
+public class Test
+{
+	
+	public static void main(String[] args) 
+	{
+		/*
+		DBManager db = new DBManager();
+		db.DBOpen();
+		UserVO uservo = new UserVO();
+		uservo.setId("dlwntjd");
+		uservo.setPw("ezen");
+		uservo.setName("이주성");
+		uservo.setNick("이젠");
+		uservo.setPosition("Top");
+		uservo.setTeam("T1");
+		uservo.setEmail("dlwntjd8985@naver.com");
+		uservo.setUserdiv("0");
+		
+		UserDTO userdto = new UserDTO();
+		userdto.Join(uservo);
+		db.DBClose();
+		*/
+		UserDTO dto = new UserDTO();
+		dto.IsCuplicate("이이");
+	}
+
+}

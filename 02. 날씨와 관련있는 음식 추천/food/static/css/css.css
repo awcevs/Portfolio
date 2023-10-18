@@ -1,0 +1,50 @@
+@charset "EUC-KR";
+
+body
+{
+	color:#495057;
+}
+
+h2
+{
+    color:#343A40;
+    font-size:20pt;
+}
+
+a
+{
+	text-decoration-line:none;
+	cursor:pointer;
+	color:#495057;
+}
+
+#btns
+{
+    position:fixed;
+    bottom:2rem;
+    right:2rem;    
+}
+
+circle:hover
+{
+    fill:#5F5F5F;
+}
+
+.foodBg
+{
+    background-color:#E9ECEF;
+    border-radius:10px;
+    padding: 20px 0px 20px 0px;
+}
+
+.foodBg:hover
+{
+    background-color : #CED4DA;
+}
+
+.foodname
+{
+    margin-top: 10px;
+    font-size:14pt;
+    font-weight: 600;
+}

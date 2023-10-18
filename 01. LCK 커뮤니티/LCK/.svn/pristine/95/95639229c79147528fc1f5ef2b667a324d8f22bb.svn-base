@@ -1,0 +1,42 @@
+package test;
+
+import java.util.ArrayList;
+
+import cteam.dao.*;
+import cteam.dto.*;
+import cteam.dto.*;
+import cteam.vo.*;
+
+public class Test
+{
+	
+	public static void main(String[] args) 
+	{
+//		DBManager db = new DBManager();
+//		db.DBOpen();
+//		UserVO uservo = new UserVO();
+//		uservo.setId("dlwntjd");
+//		uservo.setPw("ezen");
+//		uservo.setName("¿Ã¡÷º∫");
+//		uservo.setNick("¿Ã¡®");
+//		uservo.setPosition("Top");
+//		uservo.setTeam("T1");
+//		uservo.setEmail("dlwntjd8985@naver.com");
+//		uservo.setUserdiv("0");
+//		
+//		UserDTO userdto = new UserDTO();
+//		userdto.Join(uservo);
+//		db.DBClose();
+		
+//		ReplyDTO dto = new ReplyDTO();
+//		ArrayList<ReplyVO> list = dto.List("5");
+//		
+//		System.out.println(list);
+		
+		ServiceDTO sdto = new ServiceDTO();
+		BoardDTO   bdto = new BoardDTO();
+		BoardVO    vo = bdto.Read(9, false);
+	}
+	
+	
+}

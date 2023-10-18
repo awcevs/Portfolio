@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="EUC-KR">
+		<title>Insert title here</title>
+		<script src="{{ url_for('static', filename='js/jquery-3.7.0.js') }}"></script>
+		<link rel="stylesheet" href=" {{ url_for('static', filename='css/css.css') }}">
+	</head>
+	<body>
+    	<script>
+        	window.onload = function()
+        	{
+            	// 날씨 select 변경하면 음식 목록 갱신 ===================================
+            	$("#weatherSelect").on("change", function(){
+                    //alert("select");
+                    data = 
+                    {
+                         "todo" : "weather",
+                         "weatherSelect" : $(this).val() 
+                     };
+                    //console.log(weatherSelect);
+                    GetFood(data);
+                });
+            	
+            	// 음식 목록 정렬 ==================================================
+            	$("#orderby").on("change", function(){
+                    data = 
+                    { 
+                        "todo" : "orderby",
+                        "weatherSelect" : $("#weatherSelect").val(),
+                        "orderby" : $("#orderby").val() 
+                    };
+                    //console.log(data);
+                    GetFood(data);
+                });
+                
+                // 페이지 첫 로드 때 날씨, 음식 목록 갱신 =========================
+                $("#weatherSelect").val("{{result}}").attr("selected", true);
+                data = 
+                { 
+                    "todo" : "weather",
+                    "weatherSelect" : $("#weatherSelect").val() 
+                };
+                //weatherSelector(data)
+                GetFood(data)
+                
+                // 페이지 최상단 이동 ========================================
+                $("#toTop").click(function(){
+                    window.scrollTo({ top: 0, behavior: "smooth" });
+                    //alert("click");
+                });
+                
+                // 새로고침 버튼 ========================================
+                $("#refresh").click(function(){
+                    location.reload();
+                });   		
+                
+        	}
+        	
+        	// 음식 목록 갱신 ========================================
+        	function GetFood(jsonData)
+        	{
+        		$.ajax({
+					type : "post",
+					url : "/ajax",
+					data : JSON.stringify(jsonData), 
+					dataType : "json",
+					success : function(data) 
+					{	
+						//data = data;
+						//alert(data.length);
+						//alert(data[0].foodname);
+						outHtml = ""
+						count = 0;
+						$.each(data,function(index,item){
+    						if(count == 0 || count % 5 == 0)
+    						{
+                                outHtml += '<tr>';        					
+    						}
+                            outHtml += '<td>';
+                            outHtml += '    <div class="foodBg">';
+                            outHtml += '        <a href="/result/'+$("#weatherSelect").val()+'/'+item.foodnum+'">';
+                			outHtml += '            <img src="/static/images/' + item.foodname + '.jpg" style="width:200px;height:200px" title=""><br>';
+                            outHtml += '            <div class="foodname">' + item.foodname + '</div><br>';
+                            outHtml += '            칼로리 : ' + item.kcal + ' kcal<br>';
+                            outHtml += '            단백질 : ' + item.protein + ' g<br>';
+                            outHtml += '            언급 횟수 : ' + item.word_count + ' 회<br>';
+                			outHtml += '        </a>';
+                			outHtml += '    </div>';
+                            outHtml += '</td>';
+                            count++;
+                            if(count % 5 == 0)
+                            {
+                                outHtml +='</tr>'
+                            }	
+						});
+						$("#food").html(outHtml);
+						titleWtr();
+					},
+					error : function(xhr, status, error) 
+					{
+						alert("error");
+					}	
+				});
+        	}
+        	
+        	// 제목 날씨 갱신 ========================================
+        	function titleWtr()
+        	{
+            	$("#titleWtr").html($("#weatherSelect option:selected").text());
+        	}
+        	
+    	</script>
+    	<!-- 제목, 날씨 정보, 날씨 선택, 정렬 선택 -->
+		<table align="center" style="width:1200px;text-align:center;padding: 10px 0px 10px 0px">
+			<tr>
+				<td colspan="3">
+					<h2>날씨에 따른 음식 추천 ( <span id="titleWtr"></span> )</h2>
+				</td>
+			</tr>
+			<tr>
+				<td style="text-align:left">
+					<b style="font-size:14pt;">날씨 정보</b><br>
+					현재 온도 : {{ degree }}<br>
+					현재 날씨 : {{ weather }}<br>
+				</td>
+				<td style="text-align:left">
+    				* 음식을 클릭해 유사도가 높은 음식 추천 목록으로 이동합니다.
+				</td>
+				<td style="text-align:right">
+					날씨 :
+					<select id="weatherSelect" style="width:120px">
+						<option value="hot">더운 날</option>
+						<option value="cold">추운 날</option>
+						<option value="rain">비 오는 날</option>
+						<option value="snow">눈 오는 날</option>
+						<option value="rainsnow">비/눈 오는 날</option>
+						<option value="normal">평온한 날</option>
+					</select>
+					<br>
+					정렬 :
+					<select id="orderby" style="width:120px">
+						<option value="word_count asc" selected>언급 횟수 순</option>
+						<option value="foodname asc">음식이름 순</option>
+						<option value="kcal desc">높은 칼로리 순</option>
+						<option value="kcal asc">낮은 칼로리 순</option>
+						<option value="protein desc">높은 단백질 순</option>
+						<option value="protein asc">낮은 단백질 순</option>
+					</select>
+				</td>
+			</tr>
+       	</table>
+       	<!-- 날씨 음식 목록 -->
+  		<table id="food" align="center" style="width:1200px;text-align:center">
+		</table>
+       	<!-- 버튼 -->
+        <div id="btns">
+            <svg id="refresh" viewBox="0 0 24 24" width="2.5rem" height="2.5rem" style="margin-right:1rem;">
+                <circle fill="#A0A0A0" cx="12" cy="12" r="12"/>
+                <path fill="#ffffffdd" style="transform:scale(0.6);transform-origin: 40% 50%;" d="M13.5 2c-5.621 0-10.211 4.443-10.475 10h-3.025l5 6.625 5-6.625h-2.975c.257-3.351 3.06-6 6.475-6 3.584 0 6.5 2.916 6.5 6.5s-2.916 6.5-6.5 6.5c-1.863 0-3.542-.793-4.728-2.053l-2.427 3.216c1.877 1.754 4.389 2.837 7.155 2.837 5.79 0 10.5-4.71 10.5-10.5s-4.71-10.5-10.5-10.5z"/>
+            </svg>
+        	<svg id="toTop" viewBox="0 0 24 24" width="2.5rem" height="2.5rem">
+                <circle fill="#A0A0A0" cx="12" cy="12" r="12"/>
+                <path fill="#ffffffdd" d="M12 10.828l-4.95 4.95-1.414-1.414L12 8l6.364 6.364-1.414 1.414z"/>
+            </svg>
+        </div>
+	</body>
+</html>
